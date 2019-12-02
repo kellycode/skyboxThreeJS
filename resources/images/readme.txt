@@ -11,3 +11,4 @@ http://creativecommons.org/licenses/by-sa/3.0/
 
 This license applies to the following:
 arid
+arid2
