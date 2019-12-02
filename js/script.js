@@ -1,5 +1,5 @@
-let scene, camera, renderer;
-
+let scene, camera, renderer, time, controls;
+time = timeNow()
 const daySelect = document.getElementById("day-select");
 const renderButton = document.getElementById("render-btn");
 
@@ -17,13 +17,14 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    let controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.addEventListener('change', renderer);
     controls.minDistance = 500;
     controls.maxDistance = 1500;
 }
 
 function mySceneCreator(){
+
     let materialArray = changeMaterialArray(document.getElementById("day-select").value);
 
     for (let i = 0; i < 6; i++) {
@@ -31,9 +32,38 @@ function mySceneCreator(){
     }
     let skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    
     scene.add(skybox);
+    textGenerator();
+    setInterval(textGenerator, 30000)
+    // scene.add(digitalClock);
     animate();
 }
+
+function textGenerator(){
+    let fontLoader = new THREE.FontLoader();
+
+    fontLoader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function(font) {
+    let digitalClock =  createTextMesh(timeNow(), font, 80, new THREE.MeshPhongMaterial({
+        color: 0x40476d,
+        specular: 0x555555,
+        shininess: 30
+    }));
+    digitalClock.name ='digitialClock';
+    let selectedObject = scene.getObjectByName('digitialClock');
+    if(selectedObject){
+        scene.remove(selectedObject);
+    }
+    scene.add(digitalClock);
+    });
+}
+function timeNow() {
+    var d = new Date(),
+      h = (d.getHours()<10?'0':'') + d.getHours(),
+      m = (d.getMinutes()<10?'0':'') + d.getMinutes();
+      s = (d.getSeconds()<10?'0':'') + d.getSeconds();
+    return h + ':' + m+":"+s;
+  }
 
 function changeMaterialArray(part) {
     let texture_ft, texture_bk, texture_up, texture_dn, texture_rt, texture_lf;
@@ -65,9 +95,34 @@ function changeMaterialArray(part) {
 }
 
 function animate() {
+    
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
+    controls.update();
+    
 }
+
+function createTextMesh(text, font, size, mat) {
+    var geo = new THREE.TextGeometry(text, {
+         font: font,
+         size: size,
+         height: 10,
+         curveSegments: 12,
+         bevelEnabled: true,
+         material: 0,
+         extrudeMaterial: 1
+     });
+
+     geo.center();
+     geo.computeBoundingBox();
+
+     return new THREE.Mesh(geo, mat);
+ }
+ function foo(){
+    console.log('function is being called')
+}
+
+
 
 init();
 mySceneCreator();
