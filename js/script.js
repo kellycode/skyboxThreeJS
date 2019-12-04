@@ -67,7 +67,8 @@ function timeNow() {
 
 function changeMaterialArray(part) {
     let texture_ft, texture_bk, texture_up, texture_dn, texture_rt, texture_lf;
-    let imgResourcePath = 'http://localhost:9000/resources/images/';
+//     let imgResourcePath = 'http://localhost:9000/resources/images/';
+    let imgResourcePath = 'resources/images/'
     let materialArray =[];
     if (part == 'Night') {
         texture_ft = new THREE.TextureLoader().load(imgResourcePath + 'arid_ft.jpg');
