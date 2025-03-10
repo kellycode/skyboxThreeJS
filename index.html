@@ -1,24 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="author" content="Script Tutorials" />
         <title>SkyBox</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link href="css/main.css" rel="stylesheet" type="text/css" />
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+                }
+            }
+        </script>
+        <script type="module">
+            import * as THREE from "three";
+            import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+            import { FontLoader } from "three/addons/loaders/FontLoader.js";
+            import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+            window.THREE = THREE;
+            window.OrbitControls = OrbitControls;
+            window.FontLoader = FontLoader;
+            window.TextGeometry = TextGeometry;
+
+            function appendScript(path) {
+                const script = document.createElement("script");
+                script.src = path;
+                script.async = false;
+                script.defer = true;
+                document.head.appendChild(script);
+            }
+
+            // ready
+            appendScript("js/script.js");
+        </script>
     </head>
     <body>
-            <div id="inputDiv">
+        <div id="inputDiv">
             <label>what part of day is it?</label>
             <select id="day-select">
-                    <option value="Day">Day</option>
-                    <option value="Night">Night</option>
+                <option value="Day">Day</option>
+                <option value="Night">Night</option>
             </select>
-            <button id='render-btn'><strong>Render!</strong></button>
+            <button id="render-btn"><strong>Render!</strong></button>
         </div>
-        <script src="js/three.min.js"></script>
-        <script src="js/OrbitControls.js"></script>
-        <script src="js/script.js"></script>
-        
     </body>
 </html>
